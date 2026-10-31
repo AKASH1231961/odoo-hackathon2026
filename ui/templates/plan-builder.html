@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brightloop — Catalog &amp; plan builder</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="static/css/common.css">
+<style>
+  .variant-row{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:8px;}
+  .variant-row .name{font-size:13px;font-weight:600;}
+  .variant-row .price{font-size:12.5px;color:var(--accent-dark);font-weight:600;}
+  .freq-pick{display:flex;gap:8px;}
+  .freq-pick button{flex:1;padding:9px 0;border-radius:var(--radius-sm);border:1px solid var(--border-strong);background:var(--bg-surface);font-size:12.5px;font-weight:600;color:var(--text-secondary);cursor:pointer;}
+  .freq-pick button.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-dark);}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="rail" id="rail-mount"></nav>
+
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span>Brightloop Admin</div>
+    <input class="search" id="catalogSearch" placeholder="Search products, plans…">
+    <div class="right">
+      <span class="persona-tag"></span>
+      <div class="icon-btn"></div>
+      <div class="avatar"></div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1 id="pageTitle">New product &amp; plan</h1>
+        <p class="sub">Add a product, its variants, and the billing plan customers subscribe to.</p>
+      </div>
+      <div class="toolbar" id="editActions">
+        <button class="btn btn-ghost" id="cancelBtn" type="button">Clear</button>
+        <button class="btn btn-primary" id="saveBtn" type="button">Save product</button>
+      </div>
+    </div>
+
+    <div class="main-grid">
+      <div style="display:flex;flex-direction:column;gap:20px;" id="editForm">
+
+        <div class="panel">
+          <div class="panel-title">Product details</div>
+          <div class="field-row">
+            <div class="field"><label>Product name</label><input id="prodName" placeholder="e.g. Business Suite"></div>
+            <div class="field"><label>Type</label>
+              <select id="prodType"><option>Software</option><option>Add-on</option><option>Service</option></select>
+              <span class="hint">Add-ons can be switched on by customers in their portal.</span>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Sales price (₹)</label><input type="number" min="0" step="0.01" id="prodPrice"></div>
+            <div class="field"><label>Cost price (₹)</label><input type="number" min="0" step="0.01" id="prodCost"></div>
+          </div>
+          <div class="field"><label>Notes</label><textarea rows="2" id="prodNotes"></textarea></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">Variants</div>
+          <div id="variantRows"></div>
+          <div class="inline-add">
+            <div class="field"><label>Variant name</label><input id="variantLabel" placeholder="e.g. White-label"></div>
+            <div class="field"><label>Extra price (₹)</label><input type="number" step="0.01" id="variantDelta" placeholder="0"></div>
+            <button class="btn btn-ghost" id="addVariantBtn" type="button">+ Add variant</button>
+          </div>
+          <p class="hint" style="margin-top:8px;">Choosing a variant adds its amount on top of the base price automatically.</p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">Billing plan <span class="cell-muted" style="font-size:11.5px;font-weight:500;" id="planHint">Leave the plan name empty to save only the product</span></div>
+          <div class="field-row">
+            <div class="field"><label>Plan name</label><input id="planName" placeholder="e.g. Business Monthly"></div>
+            <div class="field"><label>Plan price (₹)</label><input type="number" min="0" step="0.01" id="planPrice"></div>
+          </div>
+          <div class="field"><label>Billing frequency</label>
+            <div class="freq-pick" id="freqPick">
+              <button type="button" data-v="daily">Daily</button><button type="button" data-v="weekly">Weekly</button><button type="button" class="active" data-v="monthly">Monthly</button><button type="button" data-v="yearly">Yearly</button>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Minimum quantity</label><input type="number" min="1" id="planMin" value="1"></div>
+            <div></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Available from</label><input type="date" id="planFrom"></div>
+            <div class="field"><label>Available to</label><input type="date" id="planTo"></div>
+          </div>
+          <div class="check-row" style="margin-bottom:10px;"><input type="checkbox" id="planAutoClose"> Auto-close when the plan ends</div>
+          <div class="check-row" style="margin-bottom:10px;"><input type="checkbox" id="planClose" checked> Allow early closing</div>
+          <div class="check-row" style="margin-bottom:10px;"><input type="checkbox" id="planPause" checked> Allow pausing</div>
+          <div class="check-row"><input type="checkbox" id="planRenew" checked> Allow renewal</div>
+        </div>
+
+      </div>
+
+      <div class="summary-panel">
+        <div class="panel" id="previewPanel">
+          <div class="panel-title">Live preview</div>
+          <div id="preview"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Products</div>
+          <table><tbody id="productRows"></tbody></table>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Existing plans</div>
+          <table><tbody id="existingPlans"></tbody></table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="static/js/api.js"></script>
+<script src="static/js/nav.js"></script>
+<script src="static/js/pages/catalog.js"></script>
+</body>
+</html>

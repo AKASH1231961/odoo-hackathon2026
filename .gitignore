@@ -35,15 +35,7 @@ wheels/
 .pytest_cache/
 test.db
 
-# Node / Frontend
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-frontend/dist/
-frontend/node_modules/
-backend/venv/
+celerybeat-schedule*
 
 # Environment files
 .env

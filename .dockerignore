@@ -1,0 +1,9 @@
+.git
+.env
+docs
+**/__pycache__
+**/.pytest_cache
+**/*.pyc
+backend/tests
+backend/test.db
+backend/celerybeat-schedule*

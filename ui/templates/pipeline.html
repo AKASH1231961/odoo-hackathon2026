@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brightloop — Subscription pipeline</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="static/css/common.css">
+</head>
+<body>
+<div class="app">
+  <nav class="rail" id="rail-mount"></nav>
+
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span>Brightloop Ops</div>
+    <input class="search" id="subSearch" placeholder="Subscription # or customer">
+    <div class="right">
+      <span class="persona-tag"></span>
+      <div class="icon-btn"></div>
+      <div class="avatar"></div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1>Subscription pipeline</h1>
+        <p class="sub">From quotation template to an active subscription — see where every deal stands.</p>
+      </div>
+      <div class="toolbar">
+        <button class="btn btn-ghost" id="quoteBtn">+ Quote from template</button>
+        <button class="btn btn-primary" id="newSubBtn">+ New subscription</button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <select class="pill-select" id="planFilter"><option value="">All plans</option></select>
+      <div class="spacer"></div>
+      <span class="cell-muted" style="font-size:12.5px;" id="subCount"></span>
+    </div>
+
+    <div class="kanban" id="board"></div>
+
+    <div class="panel" id="detail" style="margin-top:4px;" hidden></div>
+  </main>
+</div>
+<!-- New subscription / quote from template -->
+<div class="modal-overlay" id="subModal">
+  <form class="modal" id="subForm">
+    <div class="modal-head"><h3 id="subModalTitle">New subscription</h3><span class="modal-close" onclick="BL.modal('subModal', false)">&times;</span></div>
+    <div class="field"><label>Find customer</label><input id="customerSearch" placeholder="Name, email or company"></div>
+    <div class="field"><label>Customer</label><select id="customerPick" required></select></div>
+    <div class="field" id="planField"><label>Plan</label><select id="planPick"></select></div>
+    <div class="field" id="variantField"><label>Variant</label><select id="variantPick"></select></div>
+    <div class="field" id="templateField" hidden><label>Quotation template</label><select id="templatePick"></select></div>
+    <div class="field-row">
+      <div class="field"><label>Start date</label><input type="date" id="startPick"></div>
+      <div class="field"><label>Expiry date</label><input type="date" id="expiryPick"></div>
+    </div>
+    <div class="field"><label>Payment terms (days)</label><input type="number" min="0" id="termsPick" placeholder="Default from the template, or 15"></div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" onclick="BL.modal('subModal', false)">Cancel</button>
+      <button type="submit" class="btn btn-primary">Create draft</button>
+    </div>
+  </form>
+</div>
+
+<script src="static/js/api.js"></script>
+<script src="static/js/nav.js"></script>
+<script src="static/js/pages/pipeline.js"></script>
+</body>
+</html>
