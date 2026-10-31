@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brightloop — Invoices</title>
+<link rel="stylesheet" href="static/css/common.css">
+</head>
+<body>
+<div class="app">
+  <nav class="rail" id="rail-mount"></nav>
+
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span>Brightloop Ops</div>
+    <input class="search" placeholder="Go to invoice #">
+    <div class="right">
+      <span class="persona-tag">Internal operations</span>
+      <div class="icon-btn">●</div>
+      <div class="avatar">SR</div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1>Invoices</h1>
+        <p class="sub">Generated automatically from subscriptions on billing day. Nothing is billed twice.</p>
+      </div>
+      <div class="toolbar">
+        <button class="btn btn-ghost">Run billing now</button>
+        <button class="btn btn-primary">+ New invoice</button>
+      </div>
+    </div>
+
+    <div class="main-grid">
+      <div style="display:flex;flex-direction:column;gap:20px;">
+
+        <div class="panel">
+          <div class="toolbar" style="margin-bottom:14px;">
+            <select class="pill-select"><option>All statuses</option><option>Draft</option><option>Confirmed</option><option>Paid</option></select>
+            <select class="pill-select"><option>This month</option><option>Last month</option></select>
+            <div class="spacer"></div>
+            <span class="cell-muted" style="font-size:12.5px;">Billing run · 31 Oct 2026, 02:00</span>
+          </div>
+          <table>
+            <thead><tr><th>Invoice</th><th>Customer</th><th>Amount</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+              <tr><td class="cell-strong">INV-3391</td><td>Brightside Media</td><td>₹2,960.00</td><td><span class="badge badge-ok">Paid</span></td><td><a class="btn btn-ghost btn-sm">View</a></td></tr>
+              <tr><td class="cell-strong">INV-3392</td><td>Harvest Grocers</td><td>₹1,200.00</td><td><span class="badge badge-warn">Confirmed</span></td><td><a class="btn btn-ghost btn-sm" onclick="togglePayment(true)">Record payment</a></td></tr>
+              <tr><td class="cell-strong">INV-3393</td><td>Zenith Freight</td><td>₹48,000.00</td><td><span class="badge badge-neutral">Draft</span></td><td><a class="btn btn-ghost btn-sm">Confirm</a></td></tr>
+              <tr><td class="cell-strong">INV-3375</td><td>Coral Dairy Co.</td><td>₹2,960.00</td><td><span class="badge badge-danger">Overdue</span></td><td><a class="btn btn-ghost btn-sm" onclick="togglePayment(true)">Record payment</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">INV-3392 — Harvest Grocers <span class="badge badge-warn">Confirmed</span></div>
+          <table>
+            <thead><tr><th>Product</th><th>Qty</th><th>Unit price</th><th>Tax</th><th>Amount</th></tr></thead>
+            <tbody>
+              <tr><td>Starter plan</td><td>1</td><td>₹1,200.00</td><td>18%</td><td>₹1,416.00</td></tr>
+            </tbody>
+          </table>
+          <table style="margin-top:4px;">
+            <tbody>
+              <tr><td class="cell-muted">Loyalty discount (10%, auto-applied)</td><td style="text-align:right;color:var(--ok);">− ₹120.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <div class="summary-panel">
+        <div class="panel">
+          <div class="panel-title">Invoice summary</div>
+          <div class="summary-line"><span class="l">Subtotal</span><span>₹1,200.00</span></div>
+          <div class="summary-line"><span class="l">Discount</span><span style="color:var(--ok);">− ₹120.00</span></div>
+          <div class="summary-line"><span class="l">Tax (18%)</span><span>₹194.40</span></div>
+          <div class="summary-line total"><span class="l">Total due</span><span>₹1,274.40</span></div>
+          <button class="btn btn-primary btn-block" style="margin-top:6px;" onclick="togglePayment(true)">Record payment</button>
+          <button class="btn btn-ghost btn-block" style="margin-top:8px;">Send to customer</button>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Status</div>
+          <div class="summary-line"><span class="l">Draft</span><span>✓</span></div>
+          <div class="summary-line"><span class="l">Confirmed</span><span>✓</span></div>
+          <div class="summary-line"><span class="l">Paid</span><span class="cell-muted">Pending</span></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Manual payment entry modal -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal">
+    <div class="modal-head"><h3>Record payment — INV-3392</h3><span class="modal-close" onclick="togglePayment(false)">&times;</span></div>
+    <div class="field"><label>Amount</label><input value="₹1,274.40"></div>
+    <div class="field-row">
+      <div class="field"><label>Method</label>
+        <select><option>Bank transfer</option><option>Card</option><option>UPI</option><option>Cheque</option></select>
+      </div>
+      <div class="field"><label>Date received</label><input value="31 Oct 2026"></div>
+    </div>
+    <div class="field"><label>Note</label><textarea rows="2" placeholder="Reference number, remarks…"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="togglePayment(false)">Cancel</button>
+      <button class="btn btn-primary">Save payment</button>
+    </div>
+  </div>
+</div>
+
+<script src="static/js/nav.js"></script>
+<script>
+function togglePayment(open){
+  document.getElementById('paymentModal').classList.toggle('open', open);
+}
+</script>
+</body>
+</html>

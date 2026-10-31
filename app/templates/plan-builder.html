@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brightloop — Catalog &amp; plan builder</title>
+<link rel="stylesheet" href="static/css/common.css">
+<style>
+  .variant-row{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:8px;}
+  .variant-row .name{font-size:13px;font-weight:600;}
+  .variant-row .price{font-size:12.5px;color:var(--accent-dark);font-weight:600;}
+  .freq-pick{display:flex;gap:8px;}
+  .freq-pick button{flex:1;padding:9px 0;border-radius:var(--radius-sm);border:1px solid var(--border-strong);background:var(--bg-surface);font-size:12.5px;font-weight:600;color:var(--text-secondary);cursor:pointer;}
+  .freq-pick button.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-dark);}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="rail" id="rail-mount"></nav>
+
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span>Brightloop Admin</div>
+    <input class="search" placeholder="Search products, plans…">
+    <div class="right">
+      <span class="persona-tag">Admin workspace</span>
+      <div class="icon-btn">●</div>
+      <div class="avatar">AD</div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1>New product &amp; plan</h1>
+        <p class="sub">Add a product, its variants, and the billing plan customers subscribe to.</p>
+      </div>
+      <div class="toolbar">
+        <button class="btn btn-ghost">Cancel</button>
+        <button class="btn btn-primary">Save product</button>
+      </div>
+    </div>
+
+    <div class="main-grid">
+      <div style="display:flex;flex-direction:column;gap:20px;">
+
+        <div class="panel">
+          <div class="panel-title">Product details</div>
+          <div class="field-row">
+            <div class="field"><label>Product name</label><input value="Business Suite"></div>
+            <div class="field"><label>Type</label>
+              <select><option>Software (core)</option><option>Add-on</option><option>Service</option></select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Sales price (base)</label><input value="₹ 2,400 / mo"></div>
+            <div class="field"><label>Cost price</label><input value="₹ 900 / mo"></div>
+          </div>
+          <div class="field"><label>Notes</label><textarea rows="2">Core subscription product for small and mid-size teams.</textarea></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">Variants <span class="link">+ Add variant</span></div>
+          <div class="variant-row"><span class="name">Standard</span><span class="price">+ ₹0</span></div>
+          <div class="variant-row"><span class="name">Odoo brand</span><span class="price">+ ₹560</span></div>
+          <div class="variant-row"><span class="name">White-label</span><span class="price">+ ₹1,200</span></div>
+          <p class="hint" style="margin-top:4px;">Choosing a variant adds its amount on top of the base price automatically.</p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">Billing plan</div>
+          <div class="field"><label>Billing frequency</label>
+            <div class="freq-pick">
+              <button>Daily</button><button>Weekly</button><button class="active">Monthly</button><button>Yearly</button>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Minimum quantity</label><input value="1"></div>
+            <div class="field"><label>Available from / to</label><input value="01 Nov 2026 – ongoing"></div>
+          </div>
+          <div class="check-row" style="margin-bottom:10px;"><input type="checkbox" checked> Auto-close when the plan ends</div>
+          <div class="check-row" style="margin-bottom:10px;"><input type="checkbox" checked> Allow early closing</div>
+          <div class="check-row" style="margin-bottom:10px;"><input type="checkbox" checked> Allow pausing</div>
+          <div class="check-row"><input type="checkbox" checked> Allow renewal</div>
+        </div>
+
+      </div>
+
+      <div class="summary-panel">
+        <div class="panel">
+          <div class="panel-title">Live preview</div>
+          <div class="summary-line"><span class="l">Base price</span><span>₹2,400 / mo</span></div>
+          <div class="summary-line"><span class="l">Odoo brand variant</span><span>+ ₹560</span></div>
+          <div class="summary-line total"><span class="l">Customer sees</span><span>₹2,960 / mo</span></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Existing plans</div>
+          <table>
+            <tbody>
+              <tr><td class="cell-strong">Starter</td><td class="cell-muted">Monthly</td><td><span class="badge badge-ok">Live</span></td></tr>
+              <tr><td class="cell-strong">Business Suite</td><td class="cell-muted">Monthly</td><td><span class="badge badge-ok">Live</span></td></tr>
+              <tr><td class="cell-strong">Enterprise</td><td class="cell-muted">Yearly</td><td><span class="badge badge-neutral">Draft</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="static/js/nav.js"></script>
+</body>
+</html>
