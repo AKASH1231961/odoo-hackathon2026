@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brightloop — Subscription pipeline</title>
+<link rel="stylesheet" href="static/css/common.css">
+</head>
+<body>
+<div class="app">
+  <nav class="rail" id="rail-mount"></nav>
+
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span>Brightloop Ops</div>
+    <input class="search" placeholder="Go to subscription #">
+    <div class="right">
+      <span class="persona-tag">Internal operations</span>
+      <div class="icon-btn">●</div>
+      <div class="avatar">SR</div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1>Subscription pipeline</h1>
+        <p class="sub">From quotation template to an active subscription — see where every deal stands.</p>
+      </div>
+      <div class="toolbar">
+        <button class="btn btn-ghost">+ Quote from template</button>
+        <button class="btn btn-primary">+ New subscription</button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <select class="pill-select"><option>All sales reps</option><option>Arjun Jose</option><option>Priya Menon</option></select>
+      <select class="pill-select"><option>All plans</option><option>Starter</option><option>Business Suite</option><option>Enterprise</option></select>
+      <div class="spacer"></div>
+      <span class="cell-muted" style="font-size:12.5px;">23 subscriptions</span>
+    </div>
+
+    <div class="kanban">
+      <div class="kanban-col">
+        <h4>Draft <span>4</span></h4>
+        <div class="kanban-card"><div class="id">SUB-1082</div><div class="name">Nimbus Retail</div><div class="meta"><span>Starter</span><span>₹1,200</span></div></div>
+        <div class="kanban-card"><div class="id">SUB-1083</div><div class="name">Coral Dairy Co.</div><div class="meta"><span>Business Suite</span><span>₹2,960</span></div></div>
+        <div class="kanban-card"><div class="id">SUB-1084</div><div class="name">Finch Logistics</div><div class="meta"><span>Starter</span><span>₹1,200</span></div></div>
+      </div>
+      <div class="kanban-col">
+        <h4>Quotation <span>6</span></h4>
+        <div class="kanban-card"><div class="id">SUB-1071</div><div class="name">Palmgrove Hotels</div><div class="meta"><span>Enterprise</span><span>₹48,000 / yr</span></div></div>
+        <div class="kanban-card"><div class="id">SUB-1073</div><div class="name">Ashoka Textiles</div><div class="meta"><span>Business Suite</span><span>₹2,960</span></div></div>
+        <div class="kanban-card"><div class="id">SUB-1076</div><div class="name">Verve Studio</div><div class="meta"><span>Starter</span><span>₹1,200</span></div></div>
+      </div>
+      <div class="kanban-col">
+        <h4>Confirmed <span>5</span></h4>
+        <div class="kanban-card"><div class="id">SUB-1050</div><div class="name">Greenfield Agro</div><div class="meta"><span>Business Suite</span><span>₹2,960</span></div></div>
+        <div class="kanban-card"><div class="id">SUB-1054</div><div class="name">Lotus Clinics</div><div class="meta"><span>Enterprise</span><span>₹48,000 / yr</span></div></div>
+      </div>
+      <div class="kanban-col">
+        <h4>Active <span>42</span></h4>
+        <div class="kanban-card"><div class="id">SUB-0998</div><div class="name">Brightside Media</div><div class="meta"><span>Business Suite</span><span>₹2,960</span></div></div>
+        <div class="kanban-card"><div class="id">SUB-1002</div><div class="name">Harvest Grocers</div><div class="meta"><span>Starter</span><span>₹1,200</span></div></div>
+        <div class="kanban-card"><div class="id">SUB-1011</div><div class="name">Zenith Freight</div><div class="meta"><span>Enterprise</span><span>₹48,000 / yr</span></div></div>
+      </div>
+      <div class="kanban-col">
+        <h4>Closed <span>11</span></h4>
+        <div class="kanban-card" style="opacity:.65;"><div class="id">SUB-0871</div><div class="name">Delta Interiors</div><div class="meta"><span>Starter</span><span>Ended 12 Oct</span></div></div>
+        <div class="kanban-card" style="opacity:.65;"><div class="id">SUB-0902</div><div class="name">Orbit Realty</div><div class="meta"><span>Business Suite</span><span>Ended 3 Oct</span></div></div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:4px;">
+      <div class="panel-title">SUB-1073 — Ashoka Textiles <span class="badge badge-warn">Quotation</span></div>
+      <div class="field-row">
+        <div class="field"><label>Plan</label><input value="Business Suite · Monthly"></div>
+        <div class="field"><label>Payment terms</label><input value="Net 15"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Start date</label><input value="01 Nov 2026"></div>
+        <div class="field"><label>Expiry date</label><input value="31 Oct 2027"></div>
+      </div>
+      <table style="margin-top:8px;">
+        <thead><tr><th>Product</th><th>Qty</th><th>Unit price</th><th>Tax</th><th>Amount</th></tr></thead>
+        <tbody>
+          <tr><td>Business Suite — Odoo brand</td><td>3</td><td>₹2,960</td><td>18%</td><td class="cell-strong">₹10,480.80</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+<script src="static/js/nav.js"></script>
+</body>
+</html>
