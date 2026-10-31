@@ -1,0 +1,19 @@
+services:
+  api:
+    volumes:
+      - ./data/GeoLite2-Country.mmdb:/app/data/GeoLite2-Country.mmdb:ro
+      - isse_models:/app/models
+    environment:
+      - ISSE_REDIS_URL=redis://redis:6379/2
+      - ISSE_GEOIP_DB_PATH=/app/data/GeoLite2-Country.mmdb
+      - ISSE_MODEL_ARTIFACT_DIR=/app/models
+
+  worker:
+    volumes:
+      - isse_models:/app/models
+    environment:
+      - ISSE_REDIS_URL=redis://redis:6379/2
+      - ISSE_MODEL_ARTIFACT_DIR=/app/models
+
+volumes:
+  isse_models:
