@@ -3,7 +3,8 @@
    (icon rail + header + content + right summary panel). */
 
 :root{
-  --bg-page:#F5F6FA;
+  color-scheme:light;
+  --bg-page:#FFFFFF;
   --bg-surface:#FFFFFF;
   --bg-rail:#FFFFFF;
   --bg-hover:#F0F2F8;
@@ -306,22 +307,3 @@ tr.clickable{cursor:pointer;}
   .kanban{grid-template-columns:repeat(6,200px);overflow-x:auto;}
 }
 
-/* Dark mode: follows viewer preference */
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg-page:#11131F;
-    --bg-surface:#171A28;
-    --bg-rail:#171A28;
-    --bg-hover:#1E2233;
-    --border:#272B3C;
-    --border-strong:#333850;
-    --text-primary:#EDEFF6;
-    --text-secondary:#A4AAC0;
-    --text-muted:#747B93;
-    --accent-soft:#1E2A52;
-    --neutral-soft:#232738;
-    --ok-soft:#113426;
-    --warn-soft:#3A2B0E;
-    --danger-soft:#3A1818;
-  }
-}
