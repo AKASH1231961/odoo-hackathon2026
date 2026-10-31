@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brightloop — Invoices</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="static/css/common.css">
+</head>
+<body>
+<div class="app">
+  <nav class="rail" id="rail-mount"></nav>
+
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span>Brightloop Ops</div>
+    <input class="search" id="invoiceSearch" placeholder="Invoice # or customer">
+    <div class="right">
+      <span class="persona-tag"></span>
+      <div class="icon-btn"></div>
+      <div class="avatar"></div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1>Invoices</h1>
+        <p class="sub">Generated automatically from subscriptions on billing day. Nothing is billed twice.</p>
+      </div>
+      <div class="toolbar">
+        <button class="btn btn-ghost" id="runBillingBtn" hidden>Run billing now</button>
+        <button class="btn btn-primary" id="newInvoiceBtn">+ New invoice</button>
+      </div>
+    </div>
+
+    <div class="main-grid">
+      <div style="display:flex;flex-direction:column;gap:20px;">
+
+        <div class="panel">
+          <div class="toolbar" style="margin-bottom:14px;">
+            <select class="pill-select" id="statusFilter"><option value="">All statuses</option><option value="draft">Draft</option><option value="confirmed">Confirmed</option><option value="overdue">Overdue</option><option value="paid">Paid</option><option value="cancelled">Cancelled</option></select>
+            <select class="pill-select" id="periodFilter"><option value="">All dates</option><option value="this">This month</option><option value="last">Last month</option></select>
+            <div class="spacer"></div>
+            <span class="cell-muted" style="font-size:12.5px;" id="invoiceCount"></span>
+          </div>
+          <table>
+            <thead><tr><th>Invoice</th><th>Customer</th><th>Amount</th><th>Due</th><th>Status</th></tr></thead>
+            <tbody id="invoiceRows"></tbody>
+          </table>
+          <div class="pager">
+            <button class="btn btn-ghost btn-sm" id="prevPage">Previous</button>
+            <span id="pageLabel"></span>
+            <button class="btn btn-ghost btn-sm" id="nextPage">Next</button>
+          </div>
+        </div>
+
+        <div class="panel" id="invoiceLines" hidden></div>
+        <div class="panel" id="invoicePayments" hidden></div>
+
+      </div>
+
+      <div class="summary-panel" id="invoiceSummary" hidden>
+        <div class="panel" id="summaryTotals"></div>
+        <div class="panel" id="summaryStatus"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Manual payment entry modal -->
+<div class="modal-overlay" id="paymentModal">
+  <form class="modal" id="paymentForm">
+    <div class="modal-head"><h3 id="paymentTitle">Record payment</h3><span class="modal-close" onclick="BL.modal('paymentModal', false)">&times;</span></div>
+    <div class="field"><label>Amount</label><input type="number" step="0.01" min="0.01" id="payAmount" required></div>
+    <div class="field-row">
+      <div class="field"><label>Method</label>
+        <select id="payMethod"><option value="bank_transfer">Bank transfer</option><option value="card">Card</option><option value="upi">UPI</option><option value="cash">Cash</option><option value="other">Other</option></select>
+      </div>
+      <div class="field"><label>Date received</label><input type="date" id="payDate" required></div>
+    </div>
+    <div class="field"><label>Reference number</label><input id="payReference"></div>
+    <div class="field"><label>Note</label><textarea rows="2" id="payNote" placeholder="Remarks…"></textarea></div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" onclick="BL.modal('paymentModal', false)">Cancel</button>
+      <button type="submit" class="btn btn-primary">Save payment</button>
+    </div>
+  </form>
+</div>
+
+<!-- New invoice from a subscription -->
+<div class="modal-overlay" id="newInvoiceModal">
+  <form class="modal" id="newInvoiceForm">
+    <div class="modal-head"><h3>New invoice</h3><span class="modal-close" onclick="BL.modal('newInvoiceModal', false)">&times;</span></div>
+    <div class="field"><label>Subscription</label><select id="invoiceSubPick" required></select>
+      <span class="hint">Bills the period that is due. Each period can only be billed once.</span></div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" onclick="BL.modal('newInvoiceModal', false)">Cancel</button>
+      <button type="submit" class="btn btn-primary">Create draft invoice</button>
+    </div>
+  </form>
+</div>
+
+<script src="static/js/api.js"></script>
+<script src="static/js/nav.js"></script>
+<script src="static/js/pages/invoicing.js"></script>
+</body>
+</html>

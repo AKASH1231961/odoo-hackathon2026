@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brightloop — Finance dashboard</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="static/css/common.css">
+<style>
+  .bar-wrap{display:flex;align-items:flex-end;gap:10px;height:140px;padding-top:10px;}
+  .bar{flex:1;background:var(--accent-soft);border-radius:4px 4px 0 0;position:relative;}
+  .bar.now{background:var(--accent);}
+  .bar-wrap .lbl{position:absolute;bottom:-20px;left:0;right:0;text-align:center;font-size:10.5px;color:var(--text-muted);}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="rail" id="rail-mount"></nav>
+
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span>Brightloop Finance</div>
+    <input class="search" id="globalSearch" placeholder="Search customer, invoice…">
+    <div class="right">
+      <span class="persona-tag"></span>
+      <div class="icon-btn"></div>
+      <div class="avatar"></div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1>Revenue overview</h1>
+        <p class="sub" id="loadedIn">Loading…</p>
+      </div>
+      <div class="toolbar">
+        <select class="pill-select" id="period"><option value="1">This month</option><option value="3">This quarter</option><option value="12">This year</option></select>
+        <select class="pill-select" id="planFilter"><option value="">All plans</option></select>
+        <button class="btn btn-ghost" id="exportBtn">Export</button>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="label">Active subscriptions</div>
+        <div class="value" id="kpiActive">—</div>
+        <div class="delta" id="kpiActiveNote"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Monthly recurring revenue</div>
+        <div class="value" id="kpiMrr">—</div>
+        <div class="delta" id="kpiMrrNote"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Revenue collected</div>
+        <div class="value" id="kpiRevenue">—</div>
+        <div class="delta" id="kpiRevenueNote"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Overdue payments</div>
+        <div class="value" id="kpiOverdue">—</div>
+        <div class="delta" id="kpiOverdueNote"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Avg. revenue per account</div>
+        <div class="value" id="kpiAverage">—</div>
+        <div class="delta" id="kpiAverageNote"></div>
+      </div>
+    </div>
+
+    <div class="main-grid">
+      <div class="panel">
+        <div class="panel-title">Money received <span class="cell-muted" style="font-size:11.5px;font-weight:500;">Last 6 months</span></div>
+        <div class="bar-wrap" id="revenueBars"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Overdue invoices</div>
+        <table><tbody id="overdueRows"></tbody></table>
+        <a class="btn btn-ghost btn-block" style="margin-top:12px;" href="invoicing.html?overdue=1">View all overdue</a>
+      </div>
+    </div>
+
+    <div class="panel-pair">
+      <div class="panel">
+        <div class="panel-title">Payments by method <span class="cell-muted" style="font-size:11.5px;font-weight:500;" id="paymentCount"></span></div>
+        <table><tbody id="paymentRows"></tbody></table>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Renewals due <span class="cell-muted" style="font-size:11.5px;font-weight:500;">Next 30 days</span></div>
+        <table><tbody id="renewalRows"></tbody></table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Jump to</div>
+      <div class="toolbar" style="flex-wrap:wrap;gap:10px;">
+        <a class="btn btn-ghost btn-sm" href="pipeline.html">Pipeline</a>
+        <a class="btn btn-ghost btn-sm" href="invoicing.html">Invoices</a>
+        <a class="btn btn-ghost btn-sm" href="plan-builder.html">Catalog &amp; plans</a>
+        <a class="btn btn-ghost btn-sm" href="pricing.html">Taxes, discounts &amp; templates</a>
+        <a class="btn btn-ghost btn-sm" href="auth-rbac.html?view=rbac" id="staffLink" hidden>Staff &amp; access</a>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Subscriptions by plan</div>
+      <table>
+        <thead><tr><th>Plan</th><th>Billing</th><th>Active</th><th>Paused</th><th>Closed</th><th>MRR</th><th>Received</th></tr></thead>
+        <tbody id="planRows"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+<script src="static/js/api.js"></script>
+<script src="static/js/nav.js"></script>
+<script src="static/js/pages/dashboard.js"></script>
+</body>
+</html>

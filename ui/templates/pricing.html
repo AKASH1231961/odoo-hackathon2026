@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brightloop — Taxes, discounts &amp; templates</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="static/css/common.css">
+</head>
+<body>
+<div class="app">
+  <nav class="rail" id="rail-mount"></nav>
+
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span>Brightloop Admin</div>
+    <div class="right">
+      <span class="persona-tag"></span>
+      <div class="icon-btn"></div>
+      <div class="avatar"></div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1>Taxes, discounts &amp; templates</h1>
+        <p class="sub">Rules applied automatically to quotations and invoices.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Tax rules <button class="btn btn-ghost btn-sm admin-only" id="addTaxBtn" hidden>+ Add tax rule</button></div>
+      <table>
+        <thead><tr><th>Name</th><th>Rate</th><th>Applies to</th><th>Status</th><th></th></tr></thead>
+        <tbody id="taxRows"></tbody>
+      </table>
+    </div>
+
+    <div class="panel admin-only" id="discountPanel" hidden>
+      <div class="panel-title">Discounts <button class="btn btn-ghost btn-sm" id="addDiscountBtn">+ Add discount</button></div>
+      <table>
+        <thead><tr><th>Name</th><th>Value</th><th>Applies to</th><th>Valid</th><th>Used</th><th>Status</th><th></th></tr></thead>
+        <tbody id="discountRows"></tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Quotation templates <button class="btn btn-ghost btn-sm" id="addTemplateBtn">+ Add template</button></div>
+      <table>
+        <thead><tr><th>Name</th><th>Plan</th><th>Lines</th><th>Valid for</th><th>Payment terms</th><th></th></tr></thead>
+        <tbody id="templateRows"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<div class="modal-overlay" id="taxModal">
+  <form class="modal" id="taxForm">
+    <div class="modal-head"><h3>Add tax rule</h3><span class="modal-close" onclick="BL.modal('taxModal', false)">&times;</span></div>
+    <div class="field"><label>Name</label><input id="taxName" placeholder="e.g. GST 18%" required></div>
+    <div class="field"><label>Rate (%)</label><input type="number" min="0" max="100" step="0.01" id="taxRate" required></div>
+    <div class="field"><label>Applies to</label>
+      <select id="taxAppliesTo"><option value="all">Everything</option><option value="product">One product</option><option value="plan">One plan</option></select>
+      <span class="hint">A product rule beats a plan rule, and a plan rule beats a general one.</span></div>
+    <div class="field" id="taxProductField" hidden><label>Product</label><select id="taxProduct"></select></div>
+    <div class="field" id="taxPlanField" hidden><label>Plan</label><select id="taxPlan"></select></div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" onclick="BL.modal('taxModal', false)">Cancel</button>
+      <button type="submit" class="btn btn-primary">Save rule</button>
+    </div>
+  </form>
+</div>
+
+<div class="modal-overlay" id="discountModal">
+  <form class="modal" id="discountForm">
+    <div class="modal-head"><h3>Add discount</h3><span class="modal-close" onclick="BL.modal('discountModal', false)">&times;</span></div>
+    <div class="field"><label>Name</label><input id="discName" required></div>
+    <div class="field-row">
+      <div class="field"><label>Type</label><select id="discType"><option value="percentage">Percentage</option><option value="fixed">Fixed amount</option></select></div>
+      <div class="field"><label>Value</label><input type="number" min="0.01" step="0.01" id="discValue" required></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Minimum purchase (₹)</label><input type="number" min="0" step="0.01" id="discMinPurchase"></div>
+      <div class="field"><label>Minimum quantity</label><input type="number" min="1" id="discMinQty"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Start date</label><input type="date" id="discStart" required></div>
+      <div class="field"><label>End date</label><input type="date" id="discEnd"></div>
+    </div>
+    <div class="field"><label>Maximum uses</label><input type="number" min="1" id="discMaxUses" placeholder="No limit"></div>
+    <div class="field"><label>Applies to</label>
+      <select id="discScope"><option value="subscription">Whole subscription</option><option value="product">Specific products</option></select></div>
+    <div class="field" id="discProductsField" hidden><label>Products</label><select id="discProducts" multiple size="4"></select></div>
+    <div class="field"><label>Find customer</label><input id="discCustomerSearch" placeholder="Name, email or company"></div>
+    <div class="field"><label>Who gets it</label><select id="discCustomer"></select></div>
+    <div class="field" id="discSubField" hidden><label>Which of their subscriptions</label><select id="discSub"></select></div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" onclick="BL.modal('discountModal', false)">Cancel</button>
+      <button type="submit" class="btn btn-primary">Save discount</button>
+    </div>
+  </form>
+</div>
+
+<div class="modal-overlay" id="templateModal">
+  <form class="modal" id="templateForm">
+    <div class="modal-head"><h3 id="tplTitle">Add quotation template</h3><span class="modal-close" onclick="BL.modal('templateModal', false)">&times;</span></div>
+    <div class="field"><label>Name</label><input id="tplName" required></div>
+    <div class="field"><label>Plan</label><select id="tplPlan" required></select></div>
+    <div class="field-row">
+      <div class="field"><label>Valid for (days)</label><input type="number" min="1" id="tplValidity" value="30" required></div>
+      <div class="field"><label>Payment terms (days)</label><input type="number" min="0" id="tplTerms" value="15" required></div>
+    </div>
+    <div class="field"><label>Product lines</label><div id="tplLines"></div>
+      <button type="button" class="btn btn-ghost btn-sm" id="tplAddLine" style="align-self:flex-start;">+ Add line</button></div>
+    <div class="field"><label>Notes</label><textarea rows="2" id="tplNotes"></textarea></div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" onclick="BL.modal('templateModal', false)">Cancel</button>
+      <button type="submit" class="btn btn-primary">Save template</button>
+    </div>
+  </form>
+</div>
+
+<script src="static/js/api.js"></script>
+<script src="static/js/nav.js"></script>
+<script src="static/js/pages/pricing.js"></script>
+</body>
+</html>

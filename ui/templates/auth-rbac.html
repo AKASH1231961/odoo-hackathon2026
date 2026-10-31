@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brightloop — Sign in</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="static/css/common.css">
+<style>
+  body.auth-mode{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--bg-page);}
+  .auth-shell{width:380px;max-width:92vw;}
+  .auth-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+  .auth-logo .dot{width:34px;height:34px;border-radius:9px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;}
+  .auth-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;}
+  .auth-tabs{display:flex;gap:4px;background:var(--bg-page);border:1px solid var(--border);border-radius:999px;padding:3px;margin-bottom:22px;}
+  .auth-tabs button{flex:1;border:none;background:transparent;padding:8px 0;font-size:12.5px;font-weight:600;color:var(--text-secondary);border-radius:999px;cursor:pointer;}
+  .auth-tabs button.active{background:var(--accent);color:#fff;}
+  .pw-rules{display:flex;flex-direction:column;gap:5px;margin:-6px 0 16px;}
+  .pw-rules .rule{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--text-muted);}
+  .pw-rules .rule.met{color:var(--ok);}
+  .pw-rules .rule .dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
+  .auth-foot{text-align:center;margin-top:16px;font-size:12.5px;color:var(--text-muted);}
+  .auth-foot a{color:var(--accent);font-weight:600;}
+  .view{display:none;}
+  .view.active{display:block;}
+</style>
+</head>
+<body class="auth-mode">
+
+<!-- ============ VIEW 1 : AUTHENTICATION ============ -->
+<div id="view-auth" class="view active">
+  <div class="auth-shell">
+    <div class="auth-logo"><div class="dot">B</div><strong>Brightloop</strong></div>
+    <div class="auth-card">
+
+      <div class="auth-tabs">
+        <button class="active" onclick="showTab('signin')">Sign in</button>
+        <button onclick="showTab('signup')">Create account</button>
+        <button onclick="showTab('reset')">Reset password</button>
+      </div>
+
+      <div class="form-msg" id="authMsg" hidden></div>
+
+      <!-- Sign in -->
+      <form id="tab-signin">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="signinEmail" placeholder="you@company.com" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="signinPassword" placeholder="••••••••••" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:6px;">Sign in</button>
+        <p class="auth-foot">Forgot it? <a onclick="showTab('reset')">Reset your password</a></p>
+      </form>
+
+      <!-- Create account -->
+      <form id="tab-signup" style="display:none;">
+        <div class="field">
+          <label>Full name</label>
+          <input id="signupName" placeholder="e.g. Priya Menon" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label>Work email</label>
+          <input type="email" id="signupEmail" placeholder="you@company.com" autocomplete="username" required>
+          <span class="hint">Each email can only be used for one account.</span>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="pw" oninput="checkPw('pw','pwRules')" placeholder="Create a password" autocomplete="new-password" required>
+        </div>
+        <div class="pw-rules" id="pwRules">
+          <div class="rule" data-rule="len"><span class="dot"></span> More than 8 characters</div>
+          <div class="rule" data-rule="upper"><span class="dot"></span> One uppercase letter</div>
+          <div class="rule" data-rule="lower"><span class="dot"></span> One lowercase letter</div>
+          <div class="rule" data-rule="special"><span class="dot"></span> One special character</div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Create account</button>
+        <p class="auth-foot">Already have one? <a onclick="showTab('signin')">Sign in</a></p>
+      </form>
+
+      <!-- Reset -->
+      <form id="tab-reset" style="display:none;">
+        <div class="field">
+          <label>Registered email</label>
+          <input type="email" id="resetEmail" placeholder="you@company.com" required>
+          <span class="hint">We'll send a reset link to this address.</span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Send reset link</button>
+        <p class="auth-foot"><a onclick="showTab('signin')">Back to sign in</a></p>
+      </form>
+
+      <!-- New password, opened from the emailed link -->
+      <form id="tab-newpw" style="display:none;">
+        <div class="field">
+          <label>New password</label>
+          <input type="password" id="newPw" oninput="checkPw('newPw','newPwRules')" autocomplete="new-password" required>
+        </div>
+        <div class="pw-rules" id="newPwRules">
+          <div class="rule" data-rule="len"><span class="dot"></span> More than 8 characters</div>
+          <div class="rule" data-rule="upper"><span class="dot"></span> One uppercase letter</div>
+          <div class="rule" data-rule="lower"><span class="dot"></span> One lowercase letter</div>
+          <div class="rule" data-rule="special"><span class="dot"></span> One special character</div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Set new password</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ VIEW 2 : ADMIN — STAFF & ACCESS (RBAC) ============ -->
+<div id="view-rbac" class="view">
+  <div class="app">
+    <nav class="rail" id="rail-mount"></nav>
+
+    <header class="topbar">
+      <div class="brand"><span class="dot"></span>Brightloop Admin</div>
+      <input class="search" id="staffSearch" placeholder="Search staff, roles…">
+      <div class="right">
+        <span class="persona-tag"></span>
+        <div class="icon-btn"></div>
+        <div class="avatar"></div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="page-head">
+        <div>
+          <h1>Staff &amp; access</h1>
+          <p class="sub">Only the admin can add new staff members and assign roles.</p>
+        </div>
+        <button class="btn btn-primary" onclick="BL.modal('inviteModal', true)">+ Add staff member</button>
+      </div>
+
+      <div class="panel">
+        <div class="toolbar" style="margin-bottom:14px;">
+          <select class="pill-select" id="roleFilter"><option value="">All roles</option><option value="admin">Admin</option><option value="staff">Staff</option></select>
+          <select class="pill-select" id="statusFilter"><option value="">All status</option><option value="true">Active</option><option value="false">Deactivated</option></select>
+          <div class="spacer"></div>
+          <span class="cell-muted" style="font-size:12.5px;" id="staffCount"></span>
+        </div>
+        <table>
+          <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Added</th><th></th></tr></thead>
+          <tbody id="staffRows"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Add staff modal -->
+<div class="modal-overlay" id="inviteModal">
+  <form class="modal" id="inviteForm">
+    <div class="modal-head"><h3>Add staff member</h3><span class="modal-close" onclick="BL.modal('inviteModal', false)">&times;</span></div>
+    <div class="field"><label>Full name</label><input id="inviteName" placeholder="e.g. Priya Menon" required></div>
+    <div class="field"><label>Work email</label><input type="email" id="inviteEmail" placeholder="name@brightloop.com" required></div>
+    <div class="field"><label>Temporary password</label>
+      <input type="password" id="invitePassword" autocomplete="new-password" required>
+      <span class="hint">More than 8 characters, with upper and lower case and a special character. Share it with them directly.</span>
+    </div>
+    <div class="field">
+      <label>Role</label>
+      <select id="inviteRole"><option value="staff">Staff</option><option value="admin">Admin</option></select>
+      <span class="hint">Staff get limited access; only admins manage platform setup.</span>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" onclick="BL.modal('inviteModal', false)">Cancel</button>
+      <button type="submit" class="btn btn-primary">Add member</button>
+    </div>
+  </form>
+</div>
+
+<script src="static/js/api.js"></script>
+<script src="static/js/nav.js"></script>
+<script src="static/js/pages/auth.js"></script>
+</body>
+</html>

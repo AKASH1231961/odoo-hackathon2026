@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brightloop — My account</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="static/css/common.css">
+<style>
+  .plan-card{border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;display:flex;justify-content:space-between;align-items:center;}
+  .plan-card .left .plan-name{font-weight:700;font-size:15px;}
+  .plan-card .left .plan-meta{font-size:12.5px;color:var(--text-secondary);margin-top:4px;}
+  .plan-card .right{text-align:right;}
+  .plan-card .right .amt{font-size:18px;font-weight:700;}
+  .sub-block + .sub-block{margin-top:20px;padding-top:20px;border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="rail" id="rail-mount"></nav>
+
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span>Brightloop</div>
+    <input class="search" id="invoiceSearch" placeholder="Search invoices…">
+    <div class="right">
+      <span class="persona-tag"></span>
+      <div class="icon-btn"></div>
+      <div class="avatar"></div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="page-head">
+      <div>
+        <h1 id="welcome">Welcome back</h1>
+        <p class="sub">Manage your subscriptions, invoices, and account details.</p>
+      </div>
+      <button class="btn btn-ghost" id="statementBtn">Download statement</button>
+    </div>
+
+    <div class="main-grid">
+      <div style="display:flex;flex-direction:column;gap:20px;">
+
+        <div class="panel">
+          <div class="panel-title">Your subscriptions</div>
+          <div id="subscriptions"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">Invoice history</div>
+          <table>
+            <thead><tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Status</th><th></th></tr></thead>
+            <tbody id="invoiceRows"></tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <div class="summary-panel">
+        <form class="panel" id="profileForm">
+          <div class="panel-title">Account</div>
+          <div class="field"><label>Full name</label><input id="profileName"></div>
+          <div class="field"><label>Company</label><input id="profileCompany"></div>
+          <div class="field"><label>Billing email</label><input id="profileEmail" disabled></div>
+          <div class="field"><label>Phone</label><input id="profilePhone"></div>
+          <div class="field"><label>Address</label><textarea rows="2" id="profileAddress"></textarea></div>
+          <div class="field"><label>New password</label><input type="password" id="profilePassword" placeholder="Leave empty to keep it" autocomplete="new-password"></div>
+          <button type="submit" class="btn btn-ghost btn-block">Update details</button>
+        </form>
+        <div class="panel">
+          <div class="panel-title">Need help?</div>
+          <p class="cell-muted" style="font-size:12.5px;line-height:1.5;">Everything here updates automatically — if something looks off, reach your account manager directly instead of waiting on a ticket.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="static/js/api.js"></script>
+<script src="static/js/nav.js"></script>
+<script src="static/js/pages/portal.js"></script>
+</body>
+</html>
